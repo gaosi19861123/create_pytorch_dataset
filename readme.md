@@ -23,3 +23,6 @@
  - labels (Int64Tensor[N]): the predicted labels for each image
 
  - scores (Tensor[N]): the scores or each prediction
+ 
+ - NEED FINETUNE 
+  

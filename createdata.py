@@ -1,8 +1,9 @@
-import torch as t
+import torch
 from torchvision import models
 from torchvision import transforms
 from torchvision import datasets
 from torch.utils.data import DataLoader
+import torch as t
 
 import cv2
 import PIL
@@ -18,24 +19,13 @@ from matplotlib import pyplot as plt
 import json
 from collections import Counter
 from categorydict import dict_category
-
-#jsonファイルの中身を解読
-def read_json_file(file_name):
-    with open(file_name, "rb") as f:
-        file = json.load(f)
-
-    address = file["attributes"]['route']
-    time = file["attributes"]['timeofday']
-
-    bbox = [row["box2d"] for row in file["labels"]]
-    category = [row["category"] for row in file["labels"]]
-    
-    return address, time, bbox, category
+from utils import read_json_file
 
 class FugaDataset(object):
     
     
-    def __init__(self, root, anotation_root, transforms=True, train=True, category_dict=dict_category):    
+    def __init__(self, root, anotation_root, transforms=True, 
+                train=True, category_dict=dict_category):    
         self.root = root
         self.anotation_root = anotation_root
         self.category_dict = category_dict
@@ -87,11 +77,11 @@ class FugaDataset(object):
             boxes.append([x1, y1, x2, y2])
         
         #bounding_boxをテンソル化
-        boxes = t.as_tensor(boxes, dtype=torch.float32)
+        boxes = torch.as_tensor(boxes, dtype=torch.float32)
         
         #categoryをテンソル化します。
         category_transed = [self.category_dict[cate] for cate in category]
-        category_transed = t.as_tensor(category_transed, dtype=t.int)
+        category_transed = torch.as_tensor(category_transed, dtype=torch.int)
  
         return img, boxes, category_transed
     

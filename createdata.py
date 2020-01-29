@@ -18,14 +18,14 @@ from io import BytesIO
 from matplotlib import pyplot as plt
 import json
 from collections import Counter
-from categorydict import dict_category
+from config import opt
 from utils import read_json_file
 
 class FugaDataset(object):
     
     
     def __init__(self, root, anotation_root, transforms=True, 
-                train=True, category_dict=dict_category):    
+                train=True, category_dict=opt.dict_category):    
         self.root = root
         self.anotation_root = anotation_root
         self.category_dict = category_dict
@@ -79,11 +79,25 @@ class FugaDataset(object):
         #bounding_boxをテンソル化
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         
+        
         #categoryをテンソル化します。
-        category_transed = [self.category_dict[cate] for cate in category]
-        category_transed = torch.as_tensor(category_transed, dtype=torch.int)
- 
-        return img, boxes, category_transed
+        labels = [self.category_dict[cate] for cate in category]
+        labels = torch.as_tensor(labels, dtype=torch.int64)
+
+        image_id = torch.tensor([index])
+        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        
+        # suppose all instances are not crowd
+        iscrowd = torch.zeros((num_objs), dtype=torch.int64)
+        
+        # target
+        target = {}
+        target["boxes"] = boxes
+        target["labels"] = labels
+        target["image_id"] = image_id
+        target["area"] = area
+        target["iscrowd"] = iscrowd 
+        return img, target
     
     def __len__(self):
         return len(self.imgs)

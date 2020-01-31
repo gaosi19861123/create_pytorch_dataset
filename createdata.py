@@ -33,7 +33,7 @@ class FugaDataset(object):
         # 下载所有图像文件，为其排序
         # 确保它们对齐
         length = len(list(sorted(os.listdir(root))))
-        train_size = np.floor(length*opt.train_ratio)
+        train_size = int(np.floor(length*opt.train_ratio))
         if train:
             self.imgs = list(sorted(os.listdir(root)))[0:train_size]
             self.anotation = list(sorted(os.listdir(anotation_root)))[0:train_size]

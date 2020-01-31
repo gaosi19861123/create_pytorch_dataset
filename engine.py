@@ -4,9 +4,8 @@ import time
 import torch
 
 import torchvision.models.detection.faster_rcnn
-
-#from coco_utils import get_coco_api_from_dataset
-#from coco_eval import CocoEvaluator
+from coco_utils import get_coco_api_from_dataset
+from coco_eval import CocoEvaluator
 import utils
 
 
@@ -64,7 +63,7 @@ def _get_iou_types(model):
         iou_types.append("keypoints")
     return iou_types
 
-"""
+
 @torch.no_grad()
 def evaluate(model, data_loader, device):
     n_threads = torch.get_num_threads()
@@ -105,5 +104,4 @@ def evaluate(model, data_loader, device):
     coco_evaluator.accumulate()
     coco_evaluator.summarize()
     torch.set_num_threads(n_threads)
-    """
-    #return coco_evaluator
+    return coco_evaluator

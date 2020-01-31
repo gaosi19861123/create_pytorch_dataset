@@ -11,12 +11,12 @@ def get_model_instance_segmentation(num_classes):
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
     #backboneを変更する
-    backbone = torchvision.models.mobilenet_v2(pretrained=True).features
-    backbone.out_channels = 1280
-    model = FasterRCNN(
-        backbone,
-        num_classes=11
-                   )
+    #backbone = torchvision.models.mobilenet_v2(pretrained=True).features
+    #backbone.out_channels = 1280
+    #model = FasterRCNN(
+    #    backbone,
+    #    num_classes=11
+    #               )
     # load an instance segmentation model pre-trained pre-trained on COCO
     #model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
  

@@ -9,6 +9,7 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from getmodelinstance import get_model_instance_segmentation
 from config import opt
 from engine import train_one_epoch
+from engine import evaluate
 from torchvision.models.detection import FasterRCNN
 
 path = opt.abs_data_path
@@ -16,18 +17,36 @@ sys.path.append(path) #データパスをシステム環境に追加
 
 
 #データをリードする。
-data_set = FugaDataset(
+train_data_set = FugaDataset(
     root = path + opt.train_path, #img file path
     anotation_root = path + opt.train_ano, #anotation path
+    train=True
                 )
 
+test_data_set = FugaDataset(
+    root = path + opt.train_path, #img file path
+    anotation_root = path + opt.train_ano, #anotation path
+    train=False
+                )
+
+
 #データをiter化にする
-train_dataloader = DataLoader(data_set, 
+train_dataloader = DataLoader(train_data_set, 
                                 shuffle=True, 
                                 batch_size=1, 
                                 drop_last=True, 
                                 num_workers=0, 
                                 collate_fn=my_collate_fn)
+
+test_dataloader = DataLoader(test_data_set, 
+                                shuffle=False, 
+                                batch_size=1, 
+                                drop_last=True, 
+                                num_workers=0, 
+                                collate_fn=my_collate_fn)
+
+
+
 
 """
 for step, (img, targets) in enumerate(train_dataloader):
@@ -68,3 +87,5 @@ for epoch in range(num_epochs):
     train_one_epoch(model, optimizer, train_dataloader, device, epoch, print_freq=10)
     # update the learning rate
     lr_scheduler.step()
+    evaluate(model, test_dataloader, device=device)
+

@@ -4,8 +4,8 @@ class config:
     abs_data_path = "C:/Users/dso-s.gao/Desktop/signate" #データ保存場所
     train_path = "/dtc_train/"
     train_ano = "/dtc_train_annotations/dtc_train_annotations/"
-
-    test_path = "/dtc_test/"
+    
+    train_ratio = 0.7 #トレーンとvailadの比率
 
     dict_category = {
         'Car': 1,
@@ -24,7 +24,5 @@ class config:
     lr = 0.005 #学習率
 
 opt = config() 
-
-opt.abs_data_path
 
 

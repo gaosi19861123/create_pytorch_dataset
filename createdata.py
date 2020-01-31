@@ -32,9 +32,17 @@ class FugaDataset(object):
         self.transforms = transforms
         # 下载所有图像文件，为其排序
         # 确保它们对齐
-        self.imgs = list(sorted(os.listdir(root)))
-        self.anotation = list(sorted(os.listdir(anotation_root)))
-    
+        length = len(list(sorted(os.listdir(root))))
+        train_size = np.floor(length*opt.train_ratio)
+        if train:
+            self.imgs = list(sorted(os.listdir(root)))[0:train_size]
+            self.anotation = list(sorted(os.listdir(anotation_root)))[0:train_size]
+
+        else:
+            self.imgs = list(sorted(os.listdir(root)))[train_size:]
+            self.anotation = list(sorted(os.listdir(anotation_root)))[train_size:]
+
+
     def __getitem__(self, index):
         #画像データ、PILで読み、TO_TENSORで返す
         self.img_path = os.path.join( self.root + self.imgs[index] )

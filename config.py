@@ -5,7 +5,7 @@ class config:
     train_path = "/dtc_train/"
     train_ano = "/dtc_train_annotations/dtc_train_annotations/"
     
-    train_ratio = 0.7 #トレーンとvailadの比率
+    train_ratio = 0.9 #トレーンとvailadの比率
 
     dict_category = {
         'Car': 1,
